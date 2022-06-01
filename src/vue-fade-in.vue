@@ -1,6 +1,11 @@
 <script>
 export default {
   name: "VueFadeIn",
+  data() {
+    return {
+      show: false,
+    };
+  },
   props: {
     delay: {
       type: Number,
@@ -21,6 +26,7 @@ export default {
 
     initNodes(wrapper) {
       wrapper.childNodes.forEach((node) => this.initNode(node));
+      this.show = true;
     },
     initNode(node) {
       node.style.transition = `opacity ${this.trasitionDuration}ms, transform ${this.trasitionDuration}ms`;
@@ -45,5 +51,5 @@ export default {
 </script>
 
 <template>
-  <div ref="vueFadeIn" id="vue-fade-in"><slot /></div>
+  <div v-show="show" ref="vueFadeIn" id="vue-fade-in"><slot /></div>
 </template>
