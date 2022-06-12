@@ -1,11 +1,6 @@
 <script>
 export default {
   name: "VueFadeIn",
-  data() {
-    return {
-      show: false,
-    };
-  },
   props: {
     delay: {
       type: Number,
@@ -17,6 +12,26 @@ export default {
     },
   },
   methods: {
+    initNodes(wrapper) {
+      try {
+        wrapper.childNodes.forEach((node) => this.initNode(node));
+
+        this.startFade(wrapper);
+      } catch {
+        setTimeout(() => {
+          this.initNodes(wrapper);
+        }, 100);
+      }
+    },
+
+    initNode(node) {
+      node.style.transition = `opacity ${this.trasitionDuration}ms, transform ${this.trasitionDuration}ms`;
+    },
+    showNode(node) {
+      node.style.transform = "translateY(0px)";
+      node.style.opacity = 1;
+    },
+
     async startFade(wrapper) {
       for (let i = 0; i < wrapper.childNodes.length; i++) {
         await this.timeout(this.delay);
@@ -24,42 +39,25 @@ export default {
       }
     },
 
-    setup() {
-      try {
-        this.initNodes(this.$refs.vueFadeIn);
-        this.startFade(this.$refs.vueFadeIn);
-      } catch (err) {
-        setTimeout(() => {
-          this.setup();
-        }, 100);
-      }
-    },
-
-    initNodes(wrapper) {
-      wrapper.childNodes.forEach((node) => this.initNode(node));
-      this.show = true;
-    },
-    initNode(node) {
-      node.style.transition = `opacity ${this.trasitionDuration}ms, transform ${this.trasitionDuration}ms`;
-      node.style.transform = "translateY(20px)";
-      node.style.opacity = 0;
-    },
-
-    showNode(node) {
-      node.style.transform = "translateY(0px)";
-      node.style.opacity = 1;
-    },
-
     timeout(delay) {
       return new Promise((resolve) => setTimeout(resolve, delay));
     },
   },
   mounted() {
-    this.setup();
+    this.$nextTick(() => {
+      this.initNodes(this.$refs.vueFadeIn);
+    });
   },
 };
 </script>
 
 <template>
-  <div v-show="show" ref="vueFadeIn" id="vue-fade-in"><slot /></div>
+  <div ref="vueFadeIn" id="vue-fade-in"><slot /></div>
 </template>
+
+<style>
+#vue-fade-in > * {
+  opacity: 0;
+  transform: translateY(20px);
+}
+</style>
