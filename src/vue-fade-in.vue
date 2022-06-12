@@ -24,6 +24,17 @@ export default {
       }
     },
 
+    setup() {
+      try {
+        this.initNodes(this.$refs.vueFadeIn);
+        this.startFade(this.$refs.vueFadeIn);
+      } catch (err) {
+        setTimeout(() => {
+          this.setup();
+        }, 100);
+      }
+    },
+
     initNodes(wrapper) {
       wrapper.childNodes.forEach((node) => this.initNode(node));
       this.show = true;
@@ -44,8 +55,7 @@ export default {
     },
   },
   mounted() {
-    this.initNodes(this.$refs.vueFadeIn);
-    this.startFade(this.$refs.vueFadeIn);
+    this.setup();
   },
 };
 </script>

@@ -2,30 +2,24 @@
   "name": "vue-fade-in",
   "version": "1.0.0",
   "description": "",
-
   "main": "dist/vue-fade-in.ssr.js",
   "browser": "dist/vue-fade-in.esm.js",
   "module": "dist/vue-fade-in.esm.js",
   "unpkg": "dist/vue-fade-in.min.js",
-
   "files": [
     "dist/*",
     "src/**/*.vue"
   ],
   "sideEffects": false,
-
   "scripts": {
-    "serve": "vue-cli-service serve dev/serve.js",
+    "dev": "vue-cli-service serve --port 3000 dev/serve.js",
     "prebuild": "rimraf ./dist",
     "build": "cross-env NODE_ENV=production rollup --config build/rollup.config.js",
     "build:ssr": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format cjs",
     "build:es": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format es",
     "build:unpkg": "cross-env NODE_ENV=production rollup --config build/rollup.config.js --format iife"
   },
-
-  "dependencies": {
-  },
-
+  "dependencies": {},
   "devDependencies": {
     "@babel/core": "^7.14.6",
     "@babel/preset-env": "^7.14.7",
